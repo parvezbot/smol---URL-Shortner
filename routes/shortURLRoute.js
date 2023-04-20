@@ -4,6 +4,7 @@ const User = require("../models/userSchema");
 const { ShortUrl } = require("../models/urlSchema");
 const validUrl = require("valid-url");
 const shortid = require("shortid");
+const limiter = require("../middleware/limiter");
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const router = express.Router();
 const { redisClient } = require("../config/redisConfig");
 
 // Route to generate short-url
-router.post("/url", auth, async (req, res) => {
+router.post("/url", auth, limiter, async (req, res) => {
   // Fetching original URL to be shorted
   const { originalUrl } = req.body;
 
